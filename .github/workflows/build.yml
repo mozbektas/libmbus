@@ -1,32 +1,32 @@
-name: Build Libmbus DLL
+name: Build VBA Compatible Libmbus DLL
 
-on: # Robot ne zaman çalışsın?
+on:
   push:
     branches:
-      - master # Ana dalda değişiklik olduğunda çalışsın.
+      - master
   pull_request:
     branches:
-      - master # Ana dal için yapılan pull request'lerde çalışsın.
+      - master
 
-jobs: # Bu işlemi tanımlıyoruz.
-  build: # İşin adı.
-    runs-on: windows-latest # Windows ortamında çalışsın.
+jobs:
+  build:
+    runs-on: windows-latest
 
     steps:
-      - name: Kaynak Kodları İndir
-        uses: actions/checkout@v2 # GitHub'daki kaynak kodları indirir.
+    - name: Checkout source code
+      uses: actions/checkout@v2
 
-      - name: MinGW Kur
-        run: choco install mingw # MinGW derleyicisini kurar.
+    - name: Install MinGW
+      run: choco install mingw
 
-      - name: CMake Yapılandırması
-        run: cmake -G "MinGW Makefiles" -B build -DCMAKE_BUILD_TYPE=Release # DLL için derleme ayarları.
+    - name: Configure with CMake
+      run: cmake -G "MinGW Makefiles" -B build -DCMAKE_BUILD_TYPE=Release
 
-      - name: DLL Oluştur
-        run: cmake --build build --target ALL_BUILD # DLL dosyasını oluşturur.
+    - name: Build DLL
+      run: cmake --build build --target ALL_BUILD
 
-      - name: DLL Yükle
-        uses: actions/upload-artifact@v3 # Oluşturulan DLL'i GitHub'a yükler.
-        with:
-          name: libmbus-dll # Yüklenen dosyanın adı.
-          path: build/*.dll # DLL dosyasının yolu.
+    - name: Upload DLL as artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: libmbus-vba-dll
+        path: build/*.dll
