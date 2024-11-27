@@ -27,5 +27,11 @@ target_compile_definitions(libmbus_vba PRIVATE -DWIN32 -D_CALLCONV=__stdcall)
 # Include dizinini ekleyin
 target_include_directories(libmbus_vba PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/mbus)
 
+# MinGW ile derleme sırasında gerekebilecek bazı özel ayarlar
+if(MINGW)
+    # MinGW ile derlerken libmbus'un POSIX bağımlılıkları olabilir. Bunları devre dışı bırakabiliriz.
+    add_definitions(-D__USE_MINGW_ANSI_STDIO=1)
+endif()
+
 # Linker komutları ile ekleme yapılabilir
 # target_link_libraries(libmbus_vba PRIVATE some_required_library)
