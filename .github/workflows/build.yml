@@ -3,10 +3,10 @@ name: Build Libmbus DLL
 on: # Robot ne zaman çalışsın?
   push:
     branches:
-      - main # Ana dalda değişiklik olduğunda çalışsın.
+      - master # Ana dalda değişiklik olduğunda çalışsın.
   pull_request:
     branches:
-      - main # Ana dal için yapılan pull request'lerde çalışsın.
+      - master # Ana dal için yapılan pull request'lerde çalışsın.
 
 jobs: # Bu işlemi tanımlıyoruz.
   build: # İşin adı.
