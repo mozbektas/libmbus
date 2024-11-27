@@ -1,10 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
-project(libmbus)
+project(libmbus_vba)
 
-# C standart versiyonu
 set(CMAKE_C_STANDARD 99)
 
-# Libmbus kaynak dosyalarını belirtiyoruz
 set(MBUS_SOURCES
     mbus/mbus.c
     mbus/mbus-protocol.c
@@ -13,8 +11,12 @@ set(MBUS_SOURCES
     mbus/mbus-tcp.c
 )
 
-# Kütüphaneyi SHARED (DLL) olarak derliyoruz
-add_library(mbus SHARED ${MBUS_SOURCES})
+set(WRAPPER_SOURCES
+    wrapper.c  # Bu dosya, Excel VBA ile uyumlu wrapper kodunu içeriyor
+)
 
-# Include dizinlerini ekliyoruz
-target_include_directories(mbus PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/mbus)
+add_library(libmbus_vba SHARED ${MBUS_SOURCES} ${WRAPPER_SOURCES})
+
+target_compile_definitions(libmbus_vba PRIVATE -DWIN32 -D_CALLCONV=__stdcall)
+
+target_include_directories(libmbus_vba PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/mbus)
